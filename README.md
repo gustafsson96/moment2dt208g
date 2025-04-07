@@ -1,4 +1,5 @@
 # Programmering i TypeScript (DT208G) Moment 2
+This project makes up my contribution for "Moment 2 - Objektorienterad programmering" for the course "Programmering i TypeScript" at Mittuniversitet, Sweden. 
 
 ## Overview
 
