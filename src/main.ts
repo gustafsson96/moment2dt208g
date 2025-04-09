@@ -1,5 +1,10 @@
 import './style.css';
 
+interface ValidationResult {
+    isValid: boolean;
+    errormessage?: string;
+}
+
 interface Todo {
     task: string;
     completed: boolean;
@@ -37,9 +42,29 @@ class TodoList {
 
 // Create separate files for interface/classes and use import/export? 
 
+
+
+// Check if a task is inserted
+function validateUserInput(task: string, priority: string): { isValid: boolean, errorMessage?: string } {
+
+
+    if (!task.trim()) {
+        return { isValid: false, errorMessage: "A task is required." };
+    }
+
+    const priorityNumber: number = Number(priority);
+
+    if (![1, 2, 3].includes(priorityNumber)) {
+        return { isValid: false, errorMessage: "Priority must be 1, 2, or 3." };
+    }
+
+    return {isValid: true};
+}
+
 const taskInput = document.getElementById('task') as HTMLInputElement;
 const taskValue: string = taskInput.value;
 
 const priorityInput = document.getElementById('priority') as HTMLInputElement;
-const priorityValue: number = Number(priorityInput.value);
+const priorityValue: string = priorityInput.value;
 
+const userInputValidation: ValidationResult = validateUserInput(taskValue, priorityValue);
