@@ -37,3 +37,9 @@ class TodoList {
 
 // Create separate files for interface/classes and use import/export? 
 
+const taskInput = document.getElementById('task') as HTMLInputElement;
+const taskValue: string = taskInput.value;
+
+const priorityInput = document.getElementById('priority') as HTMLInputElement;
+const priorityValue: number = Number(priorityInput.value);
+
