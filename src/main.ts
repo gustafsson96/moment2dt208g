@@ -2,7 +2,7 @@ import './style.css';
 
 interface ValidationResult {
     isValid: boolean;
-    errormessage?: string;
+    errorMessage?: string;
 }
 
 interface Todo {
@@ -58,13 +58,29 @@ function validateUserInput(task: string, priority: string): { isValid: boolean, 
         return { isValid: false, errorMessage: "Priority must be 1, 2, or 3." };
     }
 
-    return {isValid: true};
+    return { isValid: true };
 }
 
-const taskInput = document.getElementById('task') as HTMLInputElement;
-const taskValue: string = taskInput.value;
+const form = document.getElementById('todo-form') as HTMLFormElement;
 
-const priorityInput = document.getElementById('priority') as HTMLInputElement;
-const priorityValue: string = priorityInput.value;
+form.addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent from sumbmission
 
-const userInputValidation: ValidationResult = validateUserInput(taskValue, priorityValue);
+
+    const taskInput = document.getElementById('task') as HTMLInputElement;
+    const taskValue: string = taskInput.value;
+
+    const priorityInput = document.getElementById('priority') as HTMLInputElement;
+    const priorityValue: string = priorityInput.value;
+
+    const userInputValidation: ValidationResult = validateUserInput(taskValue, priorityValue);
+
+    if (!userInputValidation.isValid) {
+        alert(userInputValidation.errorMessage);
+        return
+    }
+
+    // If valid, proceed with adding the todo FIX THIS CODE
+    TodoList.addTodo(taskValue, Number(priorityValue) as 1 | 2 | 3);
+
+});
