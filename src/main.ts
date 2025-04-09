@@ -23,7 +23,7 @@ class TodoList {
     }
 
     getTodos(): Todo[] {
-
+        return this.todos;
     }
 
     // Method saveToLocalStorage(): void
@@ -36,3 +36,4 @@ class TodoList {
 // Separate class for todo localstorage? Check class 2 1:5 min in (utility-klass)
 
 // Create separate files for interface/classes and use import/export? 
+
