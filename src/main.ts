@@ -44,7 +44,7 @@ class TodoList {
 
 
 
-// Check if a task is inserted
+// Validate user input
 function validateUserInput(task: string, priority: string): { isValid: boolean, errorMessage?: string } {
 
 
