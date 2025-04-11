@@ -35,8 +35,9 @@ class TodoList {
     }
 
     markTodoCompleted(todoIndex: number): void {
-        if (this.todos[todoIndex]) {
-            this.todos[todoIndex].completed = true;
+        const todo = this.todos[todoIndex];
+        if (todo) {
+            todo.completed = !todo.completed; 
         }
     }
 
