@@ -25,7 +25,7 @@ class TodoList {
         }
 
         const newTodo: Todo = {
-            task, 
+            task,
             completed: false,
             priority
         };
@@ -35,7 +35,7 @@ class TodoList {
     }
 
     markTodoCompleted(todoIndex: number): void {
-        if(this.todos[todoIndex]) {
+        if (this.todos[todoIndex]) {
             this.todos[todoIndex].completed = true;
         }
     }
@@ -50,7 +50,7 @@ class TodoList {
 
     loadFromLocalStorage(data: Todo[]): void {
         this.todos = data;
-    } 
+    }
 }
 
 
@@ -117,7 +117,7 @@ form.addEventListener('submit', (e) => {
     // Call addTodo method
     const wasAdded = todoList.addTodo(taskValue, Number(priorityValue) as 1 | 2 | 3);
 
-    if(!wasAdded) {
+    if (!wasAdded) {
         alert("Failed to add todo. Please try again")
         return;
     }
@@ -145,12 +145,58 @@ function renderTodos() {
         return;
     }
 
+    // Create the table element
+    const table = document.createElement('table');
+    table.className = 'todo-table'; 
+
+    // Create the table header
+    const headerRow = document.createElement('tr');
+    headerRow.innerHTML = `
+        <th>Task</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th>Actions</th>
+    `;
+    table.appendChild(headerRow);
+
+    // Loop through each todo and add a row to the table
     todos.forEach((todo, index) => {
-        const div = document.createElement('div');
-        div.className = 'todo';
-        div.innerHTML = `
-         <p><strong>${todo.task}</strong> (Priority: ${todo.priority}) - ${todo.completed ? 'YES' : 'NO'}</p>
-        `;
-        todoContainer.appendChild(div);
+        const row = document.createElement('tr');
+
+        // Create the cells for each todo property
+        const taskCell = document.createElement('td');
+        taskCell.innerText = todo.task;
+
+        const priorityCell = document.createElement('td');
+        priorityCell.innerText = `${todo.priority}`;
+
+        const statusCell = document.createElement('td');
+        statusCell.innerText = todo.completed ? 'Completed' : 'Not completed';
+
+        // Create the cell for the checkbox
+        const actionsCell = document.createElement('td');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = todo.completed;
+
+        checkbox.addEventListener('change', () => {
+            todoList.markTodoCompleted(index);
+            saveTodos();
+            renderTodos();
+        });
+
+        actionsCell.appendChild(checkbox);
+
+        // Append the cells to the row
+        row.appendChild(taskCell);
+        row.appendChild(priorityCell);
+        row.appendChild(statusCell);
+        row.appendChild(actionsCell);
+
+        // Append the row to the table
+        table.appendChild(row);
     });
+
+    // Append the table to the todo container
+    todoContainer.appendChild(table);
 }
