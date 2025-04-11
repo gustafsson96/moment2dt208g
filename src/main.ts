@@ -58,8 +58,7 @@ class TodoList {
 
 
 // Validate user input
-function validateUserInput(task: string, priority: string): { isValid: boolean, errorMessage?: string } {
-
+function validateUserInput(task: string, priority: string): ValidationResult {
 
     if (!task.trim()) {
         return { isValid: false, errorMessage: "A task is required." };
@@ -74,10 +73,14 @@ function validateUserInput(task: string, priority: string): { isValid: boolean, 
     return { isValid: true };
 }
 
+// Create a TodoList instance
+const todoList = new TodoList();
+
+// Get the form element
 const form = document.getElementById('todo-form') as HTMLFormElement;
 
 form.addEventListener('submit', (e) => {
-    e.preventDefault(); // Prevent from sumbmission
+    e.preventDefault(); // Prevent form sumbmission
 
 
     const taskInput = document.getElementById('task') as HTMLInputElement;
@@ -90,10 +93,20 @@ form.addEventListener('submit', (e) => {
 
     if (!userInputValidation.isValid) {
         alert(userInputValidation.errorMessage);
-        return
+        return;
     }
 
-    // If valid, proceed with adding the todo FIX THIS CODE
-    TodoList.addTodo(taskValue, Number(priorityValue) as 1 | 2 | 3);
+    // Call addTodo method
+    const wasAdded = todoList.addTodo(taskValue, Number(priorityValue) as 1 | 2 | 3);
+
+    if(!wasAdded) {
+        alert("Failed to add todo. Please try again")
+        return;
+    }
+
+    // Reset form and display current list
+    taskInput.value = '';
+    priorityInput.value = '';
+    console.log("Current todos:", todoList.getTodos());
 
 });
