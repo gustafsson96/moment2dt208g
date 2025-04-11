@@ -20,11 +20,24 @@ class TodoList {
     }
 
     addTodo(task: string, priority: 1 | 2 | 3): boolean {
+        if (!task.trim() || ![1, 2, 3].includes(priority)) {
+            return false;
+        }
 
+        const newTodo: Todo = {
+            task, 
+            completed: false,
+            priority
+        };
+
+        this.todos.push(newTodo);
+        return true;
     }
 
     markTodoCompleted(todoIndex: number): void {
-
+        if(this.todos[todoIndex]) {
+            this.todos[todoIndex].completed = true;
+        }
     }
 
     getTodos(): Todo[] {
