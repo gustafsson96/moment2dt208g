@@ -19,3 +19,14 @@ body {
 .todo-table th {
     background-color: #f4f4f4;
 }
+
+.remove-button {
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.remove-button:hover {
+    background-color: darkred;
+}

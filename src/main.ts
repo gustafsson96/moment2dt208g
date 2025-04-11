@@ -193,9 +193,10 @@ function renderTodos() {
 
         // Create the remove button
         const removeButton = document.createElement('button');
+        removeButton.classList.add('remove-button');
         removeButton.innerText = 'Remove';
         removeButton.addEventListener('click', () => {
-            todoList.removeTodo(index);  // Remove todo at the given index
+            todoList.removeTodo(index); 
             saveTodos();
             renderTodos();
         });
