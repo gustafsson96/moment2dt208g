@@ -34,10 +34,15 @@ class TodoList {
         return true;
     }
 
+    // Remove a todo
+    removeTodo(todoIndex: number): void {
+        this.todos.splice(todoIndex, 1); 
+    }
+
     markTodoCompleted(todoIndex: number): void {
         const todo = this.todos[todoIndex];
         if (todo) {
-            todo.completed = !todo.completed; 
+            todo.completed = !todo.completed;
         }
     }
 
@@ -148,7 +153,7 @@ function renderTodos() {
 
     // Create the table element
     const table = document.createElement('table');
-    table.className = 'todo-table'; 
+    table.className = 'todo-table';
 
     // Create the table header
     const headerRow = document.createElement('tr');
@@ -186,7 +191,18 @@ function renderTodos() {
             renderTodos();
         });
 
+        // Create the remove button
+        const removeButton = document.createElement('button');
+        removeButton.innerText = 'Remove';
+        removeButton.addEventListener('click', () => {
+            todoList.removeTodo(index);  // Remove todo at the given index
+            saveTodos();
+            renderTodos();
+        });
+
+        // Append checkbox and remove button to the actions cell
         actionsCell.appendChild(checkbox);
+        actionsCell.appendChild(removeButton);
 
         // Append the cells to the row
         row.appendChild(taskCell);
