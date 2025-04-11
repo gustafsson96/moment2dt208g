@@ -44,9 +44,13 @@ class TodoList {
         return this.todos;
     }
 
-    // Method saveToLocalStorage(): void
+    saveToLocalStorage(): string {
+        return JSON.stringify(this.todos);
+    }
 
-    // Method loadFromLocalStorage(): void 
+    loadFromLocalStorage(data: Todo[]): void {
+        this.todos = data;
+    } 
 }
 
 
@@ -76,17 +80,31 @@ function validateUserInput(task: string, priority: string): ValidationResult {
 // Create a TodoList instance
 const todoList = new TodoList();
 
-// Get the form element
+// Create key for local storage
+const LOCAL_STORAGE_KEY = "myTodos";
+
+// Get form and input elements
 const form = document.getElementById('todo-form') as HTMLFormElement;
+const taskInput = document.getElementById('task') as HTMLInputElement;
+const priorityInput = document.getElementById('priority') as HTMLInputElement;
+const todoContainer = document.getElementById('todo-container') as HTMLDivElement;
+
+const savedTodos = localStorage.getItem(LOCAL_STORAGE_KEY);
+if (savedTodos) {
+    try {
+        const parsed = JSON.parse(savedTodos);
+        todoList.loadFromLocalStorage(parsed);
+        renderTodos();
+    } catch (error) {
+        console.error("Error parsing saved todos: ", error)
+    }
+}
 
 form.addEventListener('submit', (e) => {
     e.preventDefault(); // Prevent form sumbmission
 
 
-    const taskInput = document.getElementById('task') as HTMLInputElement;
     const taskValue: string = taskInput.value;
-
-    const priorityInput = document.getElementById('priority') as HTMLInputElement;
     const priorityValue: string = priorityInput.value;
 
     const userInputValidation: ValidationResult = validateUserInput(taskValue, priorityValue);
@@ -104,9 +122,35 @@ form.addEventListener('submit', (e) => {
         return;
     }
 
-    // Reset form and display current list
-    taskInput.value = '';
-    priorityInput.value = '';
-    console.log("Current todos:", todoList.getTodos());
+    // Save and update todos list
+    saveTodos();
+    renderTodos();
+
+    // Reset form
+    form.reset();
 
 });
+
+function saveTodos() {
+    const todosJSON = todoList.saveToLocalStorage();
+    localStorage.setItem(LOCAL_STORAGE_KEY, todosJSON);
+}
+
+function renderTodos() {
+    const todos = todoList.getTodos();
+    todoContainer.innerHTML = '';
+
+    if (todos.length === 0) {
+        todoContainer.innerHTML = "<p>No todos to show right now.</p>";
+        return;
+    }
+
+    todos.forEach((todo, index) => {
+        const div = document.createElement('div');
+        div.className = 'todo';
+        div.innerHTML = `
+         <p><strong>${todo.task}</strong> (Priority: ${todo.priority}) - ${todo.completed ? 'YES' : 'NO'}</p>
+        `;
+        todoContainer.appendChild(div);
+    });
+}
