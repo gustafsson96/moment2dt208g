@@ -144,26 +144,19 @@ function saveTodos() {
 
 function renderTodos() {
     const todos = todoList.getTodos();
-    todoContainer.innerHTML = '';
+    const todoContainer = document.getElementById('todo-container') as HTMLTableSectionElement;
+
+    todoContainer.innerHTML = ''; // Clear the current list of todos
 
     if (todos.length === 0) {
-        todoContainer.innerHTML = "<p>No todos to show right now.</p>";
+        const noTodosRow = document.createElement('tr');
+        const noTodosCell = document.createElement('td');
+        noTodosCell.colSpan = 5;
+        noTodosCell.innerText = "No todos to show right now.";
+        noTodosRow.appendChild(noTodosCell);
+        todoContainer.appendChild(noTodosRow);
         return;
     }
-
-    // Create the table element
-    const table = document.createElement('table');
-    table.className = 'todo-table';
-
-    // Create the table header
-    const headerRow = document.createElement('tr');
-    headerRow.innerHTML = `
-        <th>Task</th>
-        <th>Priority</th>
-        <th>Status</th>
-        <th>Actions</th>
-    `;
-    table.appendChild(headerRow);
 
     // Loop through each todo and add a row to the table
     todos.forEach((todo, index) => {
@@ -179,42 +172,40 @@ function renderTodos() {
         const statusCell = document.createElement('td');
         statusCell.innerText = todo.completed ? 'Completed' : 'Not completed';
 
-        // Create the cell for the checkbox
+        // Create the actions cell with checkbox
         const actionsCell = document.createElement('td');
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.checked = todo.completed;
-
         checkbox.addEventListener('change', () => {
             todoList.markTodoCompleted(index);
             saveTodos();
             renderTodos();
         });
 
-        // Create the remove button
+        actionsCell.appendChild(checkbox);
+
+        // Create cell for the remove btn
+        const removeCell = document.createElement('td');
         const removeButton = document.createElement('button');
         removeButton.classList.add('remove-button');
         removeButton.innerText = 'Remove';
         removeButton.addEventListener('click', () => {
-            todoList.removeTodo(index); 
+            todoList.removeTodo(index);
             saveTodos();
             renderTodos();
         });
 
-        // Append checkbox and remove button to the actions cell
-        actionsCell.appendChild(checkbox);
-        actionsCell.appendChild(removeButton);
+        removeCell.appendChild(removeButton);
 
-        // Append the cells to the row
+        // Append cells to row
         row.appendChild(taskCell);
         row.appendChild(priorityCell);
         row.appendChild(statusCell);
         row.appendChild(actionsCell);
+        row.appendChild(removeCell);
 
-        // Append the row to the table
-        table.appendChild(row);
+        // Append row to the tbody section
+        todoContainer.appendChild(row);
     });
-
-    // Append the table to the todo container
-    todoContainer.appendChild(table);
 }

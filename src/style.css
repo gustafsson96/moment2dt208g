@@ -20,11 +20,18 @@ body {
     background-color: #f4f4f4;
 }
 
+/* Remove the border from the last td with remove btn */
+.todo-table td:last-child {
+    border: none;
+}
+
+/* Styling for remove btn */
 .remove-button {
     background-color: red;
     color: white;
     border: none;
     cursor: pointer;
+    padding: 5px 10px;
 }
 
 .remove-button:hover {
