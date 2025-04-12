@@ -1,16 +1,57 @@
 body {
- background-color: #fff;
- margin: 0;
- padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2.3em;
+    margin: 1em;
+}
+
+#todo-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+}
+
+#todo-form label {
+    font-size: 1.2em;
+    margin-left: 1em;
+}
+
+#todo-form input {
+    padding: 0.3em;
+}
+
+#todo-form button {
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-left: 1em;
+}
+
+#todo-form button:hover {
+    background-color: darkgreen;
 }
 
 .todo-table {
-    width: 100%;
+    width: 80%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin: 2em auto;
 }
 
-.todo-table th, .todo-table td {
+.todo-table th,
+.todo-table td {
     padding: 10px;
     border: 1px solid #ddd;
     text-align: left;
@@ -18,6 +59,11 @@ body {
 
 .todo-table th {
     background-color: #f4f4f4;
+}
+
+.todo-table input[type="checkbox"] {
+    accent-color: green;
+    cursor: pointer;
 }
 
 /* Remove the border from the last td with remove btn */
@@ -30,10 +76,17 @@ body {
     background-color: red;
     color: white;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
     padding: 5px 10px;
 }
 
 .remove-button:hover {
     background-color: darkred;
+}
+
+@media (max-width: 768px) {
+    .todo-table {
+        width: 98%;
+    }
 }
