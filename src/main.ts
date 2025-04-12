@@ -1,71 +1,21 @@
 import './style.css';
+import { ValidationResult } from './interfaces';
+import { TodoList } from './classes';
+import { saveTodosToLocalStorage, loadTodosFromLocalStorage } from './localstorage';
 
-interface ValidationResult {
-    isValid: boolean;
-    errorMessage?: string;
-}
+// Create a TodoList instance
+const todoList = new TodoList();
 
-interface Todo {
-    task: string;
-    completed: boolean;
-    priority: 1 | 2 | 3;
-}
+// Load from local storage
+const savedTodos = loadTodosFromLocalStorage();
+todoList.loadFromLocalStorage(savedTodos);
 
-class TodoList {
-    private todos: Todo[] = [];
+renderTodos();
 
-    constructor() {
-        console.log("Todo list created!");
-        // Collect from local storage here? From a separate class? 
-    }
-
-    addTodo(task: string, priority: 1 | 2 | 3): boolean {
-        if (!task.trim() || ![1, 2, 3].includes(priority)) {
-            return false;
-        }
-
-        const newTodo: Todo = {
-            task,
-            completed: false,
-            priority
-        };
-
-        this.todos.push(newTodo);
-        return true;
-    }
-
-    // Remove a todo
-    removeTodo(todoIndex: number): void {
-        this.todos.splice(todoIndex, 1); 
-    }
-
-    markTodoCompleted(todoIndex: number): void {
-        const todo = this.todos[todoIndex];
-        if (todo) {
-            todo.completed = !todo.completed;
-        }
-    }
-
-    getTodos(): Todo[] {
-        return this.todos;
-    }
-
-    saveToLocalStorage(): string {
-        return JSON.stringify(this.todos);
-    }
-
-    loadFromLocalStorage(data: Todo[]): void {
-        this.todos = data;
-    }
-}
-
-
-
-// Separate class for todo localstorage? Check class 2 1:5 min in (utility-klass)
-
-// Create separate files for interface/classes and use import/export? 
-
-
+// Get form and input elements
+const form = document.getElementById('todo-form') as HTMLFormElement;
+const taskInput = document.getElementById('task') as HTMLInputElement;
+const priorityInput = document.getElementById('priority') as HTMLInputElement;
 
 // Validate user input
 function validateUserInput(task: string, priority: string): ValidationResult {
@@ -75,7 +25,6 @@ function validateUserInput(task: string, priority: string): ValidationResult {
     }
 
     const priorityNumber: number = Number(priority);
-
     if (![1, 2, 3].includes(priorityNumber)) {
         return { isValid: false, errorMessage: "Priority must be 1, 2, or 3." };
     }
@@ -83,28 +32,7 @@ function validateUserInput(task: string, priority: string): ValidationResult {
     return { isValid: true };
 }
 
-// Create a TodoList instance
-const todoList = new TodoList();
-
-// Create key for local storage
-const LOCAL_STORAGE_KEY = "myTodos";
-
-// Get form and input elements
-const form = document.getElementById('todo-form') as HTMLFormElement;
-const taskInput = document.getElementById('task') as HTMLInputElement;
-const priorityInput = document.getElementById('priority') as HTMLInputElement;
-
-const savedTodos = localStorage.getItem(LOCAL_STORAGE_KEY);
-if (savedTodos) {
-    try {
-        const parsed = JSON.parse(savedTodos);
-        todoList.loadFromLocalStorage(parsed);
-        renderTodos();
-    } catch (error) {
-        console.error("Error parsing saved todos: ", error)
-    }
-}
-
+// Event listener for form submission
 form.addEventListener('submit', (e) => {
     e.preventDefault(); // Prevent form sumbmission
 
@@ -128,7 +56,7 @@ form.addEventListener('submit', (e) => {
     }
 
     // Save and update todos list
-    saveTodos();
+    saveTodosToLocalStorage(todoList.getTodos());
     renderTodos();
 
     // Reset form
@@ -136,17 +64,12 @@ form.addEventListener('submit', (e) => {
 
 });
 
-function saveTodos() {
-    const todosJSON = todoList.saveToLocalStorage();
-    localStorage.setItem(LOCAL_STORAGE_KEY, todosJSON);
-}
-
+// Render todos in DOM 
 function renderTodos() {
-    const todos = todoList.getTodos();
     const todoContainer = document.getElementById('todo-container') as HTMLTableSectionElement;
+    todoContainer.innerHTML = ''; // Clear the current list of todo
 
-    todoContainer.innerHTML = ''; // Clear the current list of todos
-
+    const todos = todoList.getTodos();
     if (todos.length === 0) {
         const noTodosRow = document.createElement('tr');
         const noTodosCell = document.createElement('td');
@@ -178,7 +101,7 @@ function renderTodos() {
         checkbox.checked = todo.completed;
         checkbox.addEventListener('change', () => {
             todoList.markTodoCompleted(index);
-            saveTodos();
+            saveTodosToLocalStorage(todoList.getTodos());
             renderTodos();
         });
 
@@ -191,7 +114,7 @@ function renderTodos() {
         removeButton.innerText = 'Remove';
         removeButton.addEventListener('click', () => {
             todoList.removeTodo(index);
-            saveTodos();
+            saveTodosToLocalStorage(todoList.getTodos());
             renderTodos();
         });
 
@@ -208,3 +131,4 @@ function renderTodos() {
         todoContainer.appendChild(row);
     });
 }
+
