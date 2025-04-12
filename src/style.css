@@ -86,7 +86,25 @@ h1 {
 }
 
 @media (max-width: 768px) {
+    body {
+        align-items: start;
+    }
+
+    h1 {
+        margin: 1em 0.5em;
+    }
+
+    #todo-form {
+        gap: 0.2em;
+    }
+
+
     .todo-table {
         width: 98%;
+    }
+
+    #todo-form label {
+        font-size: 1.1em;
+        margin-left: 0.2em;
     }
 }
