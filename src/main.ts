@@ -1,15 +1,10 @@
 import './style.css';
 import { ValidationResult } from './interfaces';
 import { TodoList } from './classes';
-import { saveTodosToLocalStorage, loadTodosFromLocalStorage } from './localstorage';
+import { saveTodosToLocalStorage } from './localstorage';
 
 // Create a TodoList instance
 const todoList = new TodoList();
-
-// Load from local storage
-const savedTodos = loadTodosFromLocalStorage();
-todoList.loadFromLocalStorage(savedTodos);
-
 renderTodos();
 
 // Get form and input elements

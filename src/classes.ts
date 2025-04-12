@@ -1,11 +1,12 @@
 import { Todo } from './interfaces';
+import { loadTodosFromLocalStorage } from './localstorage';
 
 export class TodoList {
     private todos: Todo[] = [];
 
     constructor() {
         console.log("Todo list created!");
-        // Collect from local storage here? From a separate class? 
+        this.todos = loadTodosFromLocalStorage();
     }
 
     addTodo(task: string, priority: 1 | 2 | 3): boolean {
