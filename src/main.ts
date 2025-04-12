@@ -93,7 +93,6 @@ const LOCAL_STORAGE_KEY = "myTodos";
 const form = document.getElementById('todo-form') as HTMLFormElement;
 const taskInput = document.getElementById('task') as HTMLInputElement;
 const priorityInput = document.getElementById('priority') as HTMLInputElement;
-const todoContainer = document.getElementById('todo-container') as HTMLDivElement;
 
 const savedTodos = localStorage.getItem(LOCAL_STORAGE_KEY);
 if (savedTodos) {
