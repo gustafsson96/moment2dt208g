@@ -37,7 +37,7 @@ form.addEventListener('submit', (e) => {
 });
 
 // Function to display feedback message
-function showMessage(message: string, type: 'error' | 'success') {
+export function showMessage(message: string, type: 'error' | 'success') {
     messageContainer.innerText = message;
     messageContainer.className = `message ${type}`;
 

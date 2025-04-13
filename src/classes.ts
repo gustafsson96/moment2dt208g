@@ -1,5 +1,6 @@
 import { Todo } from './interfaces';
 import { loadTodosFromLocalStorage } from './localstorage';
+import { showMessage } from './main.ts'
 
 // Class for a list of todos
 export class TodoList {
@@ -27,7 +28,8 @@ export class TodoList {
 
     // Remove a todo
     removeTodo(todoIndex: number): void {
-        this.todos.splice(todoIndex, 1); 
+        this.todos.splice(todoIndex, 1);
+        showMessage('Todo was removed.', 'success')
     }
 
     // Toggle status of todo
