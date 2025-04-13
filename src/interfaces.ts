@@ -1,8 +1,3 @@
-export interface ValidationResult {
-    isValid: boolean;
-    errorMessage?: string;
-}
-
 export interface Todo {
     task: string;
     completed: boolean;

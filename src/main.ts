@@ -1,5 +1,4 @@
 import './style.css';
-import { ValidationResult } from './interfaces';
 import { TodoList } from './classes';
 import { saveTodosToLocalStorage } from './localstorage';
 
@@ -12,41 +11,18 @@ const form = document.getElementById('todo-form') as HTMLFormElement;
 const taskInput = document.getElementById('task') as HTMLInputElement;
 const priorityInput = document.getElementById('priority') as HTMLInputElement;
 
-// Validate user input
-function validateUserInput(task: string, priority: string): ValidationResult {
-
-    if (!task.trim()) {
-        return { isValid: false, errorMessage: "A task is required." };
-    }
-
-    const priorityNumber: number = Number(priority);
-    if (![1, 2, 3].includes(priorityNumber)) {
-        return { isValid: false, errorMessage: "Priority must be 1, 2, or 3." };
-    }
-
-    return { isValid: true };
-}
-
 // Event listener for form submission
 form.addEventListener('submit', (e) => {
     e.preventDefault(); // Prevent form sumbmission
 
-
     const taskValue: string = taskInput.value;
     const priorityValue: string = priorityInput.value;
 
-    const userInputValidation: ValidationResult = validateUserInput(taskValue, priorityValue);
-
-    if (!userInputValidation.isValid) {
-        alert(userInputValidation.errorMessage);
-        return;
-    }
-
-    // Call addTodo method
+    // Call add todo method
     const wasAdded = todoList.addTodo(taskValue, Number(priorityValue) as 1 | 2 | 3);
 
     if (!wasAdded) {
-        alert("Failed to add todo. Please try again")
+        alert("Incorrect user input. Insert a task and a priority between 1 and 3.");
         return;
     }
 
