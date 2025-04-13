@@ -10,6 +10,7 @@ renderTodos();
 const form = document.getElementById('todo-form') as HTMLFormElement;
 const taskInput = document.getElementById('task') as HTMLInputElement;
 const priorityInput = document.getElementById('priority') as HTMLInputElement;
+const messageContainer = document.getElementById('message-container') as HTMLDivElement;
 
 // Event listener for form submission
 form.addEventListener('submit', (e) => {
@@ -22,7 +23,7 @@ form.addEventListener('submit', (e) => {
     const wasAdded = todoList.addTodo(taskValue, Number(priorityValue) as 1 | 2 | 3);
 
     if (!wasAdded) {
-        alert("Incorrect user input. Insert a task and a priority between 1 and 3.");
+        showMessage('Incorrect user input. Insert a task and a priority between 1 and 3.', 'error');
         return;
     }
 
@@ -32,8 +33,19 @@ form.addEventListener('submit', (e) => {
 
     // Reset form
     form.reset();
-
+    showMessage('Todo was added!', 'success')
 });
+
+// Function to display feedback message
+function showMessage(message: string, type: 'error' | 'success') {
+    messageContainer.innerText = message;
+    messageContainer.className = `message ${type}`;
+
+    setTimeout(() => {
+        messageContainer.innerText = '';
+        messageContainer.className = 'message';
+    }, 3000);
+}
 
 // Render todos in DOM 
 function renderTodos() {
@@ -45,7 +57,7 @@ function renderTodos() {
         const noTodosRow = document.createElement('tr');
         const noTodosCell = document.createElement('td');
         noTodosCell.colSpan = 5;
-        noTodosCell.innerText = "No todos to show right now.";
+        noTodosCell.innerText = 'No todos to show right now.';
         noTodosRow.appendChild(noTodosCell);
         todoContainer.appendChild(noTodosRow);
         return;
