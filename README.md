@@ -1,10 +1,10 @@
 # Programmering i TypeScript (DT208G) Moment 2
 This project makes up my contribution for "Moment 2 - Objektorienterad programmering" for the course "Programmering i TypeScript" at Mittuniversitet, Sweden.
-<br>
+<br><br>
 **Link to deployed site: [Todo App](https://dt208gmoment2.netlify.app)** 
 
 ## Overview
-This project is a To-do list application built using TypeScript and Object Oriented Programming (OOP) principles. The application allows a user to add, toggle status (completed/not completed) of and remove to do tasks with a priority order from 1 to 3. The data is saved to local storage. 
+This project is a To-do list application built using TypeScript and Object Oriented Programming (OOP) principles. The application allows users to add, toggle status (completed/not completed) of and remove to do tasks with a priority order from 1 to 3. The data is saved to local storage. 
 
 ## Installation
 
